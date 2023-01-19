@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/posts")
 public interface PostController {
@@ -25,6 +24,6 @@ public interface PostController {
     ResponseEntity<Void> deletePost(@PathVariable("id") Long id);
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> correctPost(@PathVariable("id") Long id,
-                                     @RequestBody UpdatePostRequest updatePostRequest);
+    ResponseEntity<Void> updatePost(@PathVariable("id") Long id,
+                                    @RequestBody UpdatePostRequest updatePostRequest);
 }
