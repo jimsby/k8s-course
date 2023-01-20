@@ -6,10 +6,13 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5400/posts
-    username: postgres
-    password: postgres
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5400/posts}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
     driverClassName: org.postgresql.Driver
+
 server:
+  port: ${APPLICATION_PORT:8081}
   error:
     include-message: always
+    include-binding-errors: always
