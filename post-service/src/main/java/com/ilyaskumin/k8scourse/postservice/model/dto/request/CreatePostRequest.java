@@ -1,4 +1,7 @@
 package com.ilyaskumin.k8scourse.postservice.model.dto.request;
 
-public record CreatePostRequest(Long authorId, String text) {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+public record CreatePostRequest(@Min(1) Long authorId, @NotBlank String text) {
 }

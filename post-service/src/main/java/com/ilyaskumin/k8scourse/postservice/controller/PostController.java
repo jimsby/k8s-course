@@ -1,8 +1,9 @@
 package com.ilyaskumin.k8scourse.postservice.controller;
 
-import com.ilyaskumin.k8scourse.postservice.model.dto.request.UpdatePostRequest;
 import com.ilyaskumin.k8scourse.postservice.model.dto.request.CreatePostRequest;
+import com.ilyaskumin.k8scourse.postservice.model.dto.request.UpdatePostRequest;
 import com.ilyaskumin.k8scourse.postservice.model.dto.response.PostResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,6 @@ public interface PostController {
     ResponseEntity<Void> deletePost(@PathVariable("id") Long id);
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> updatePost(@PathVariable("id") Long id,
-                                    @RequestBody UpdatePostRequest updatePostRequest);
+    ResponseEntity<PostResponse> updatePost(@PathVariable("id") Long id,
+                                            @Valid @RequestBody UpdatePostRequest updatePostRequest);
 }

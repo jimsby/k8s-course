@@ -43,8 +43,10 @@ public class PostControllerImpl implements PostController {
 
     @Override
     @Transactional
-    public ResponseEntity<Void> updatePost(Long id, UpdatePostRequest updatePostRequest) {
-        repository.findById(id).ifPresent(p -> p.setText(updatePostRequest.text()));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PostResponse> updatePost(Long id, UpdatePostRequest updatePostRequest) {
+        var post = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post doesn’t exist with given id"));
+        post.setText(updatePostRequest.text());
+        return ResponseEntity.ok(mapper.convert(post));
     }
 }
