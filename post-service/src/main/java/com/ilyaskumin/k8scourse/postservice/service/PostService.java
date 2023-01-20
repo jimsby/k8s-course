@@ -1,7 +1,10 @@
 package com.ilyaskumin.k8scourse.postservice.service;
 
+import com.ilyaskumin.k8scourse.postservice.feign.UserServiceFeignClient;
 import com.ilyaskumin.k8scourse.postservice.model.Post;
+import com.ilyaskumin.k8scourse.postservice.model.dto.request.UpdateAmountOfPostsRequest;
 import com.ilyaskumin.k8scourse.postservice.repository.PostRepository;
+import feign.RetryableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,21 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    private final UserServiceFeignClient userServiceFeignClient;
+
     private Long getPostCount(Long userId) {
         return postRepository.countAllByAuthorId(userId);
     }
 
     public void updatePostCount(Long userId) {
         var count = getPostCount(userId);
-        log.info("Count of posts for user {} changed to: {}", userId, count);
+        //change logic after all service completed
+        try {
+            userServiceFeignClient.updateAmountOfPosts(userId, new UpdateAmountOfPostsRequest(count));
+            log.info("Count of posts for user {} changed to: {}", userId, count);
+        } catch (RetryableException e) {
+            log.error(e.getLocalizedMessage());
+        }
     }
 
     public Post findPost(Long postId) {
