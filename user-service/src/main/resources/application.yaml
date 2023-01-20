@@ -10,12 +10,6 @@ spring:
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
     driverClassName: org.postgresql.Driver
-  cloud:
-    openfeign:
-      client:
-        config:
-          post-service:
-            url: ${USERSERVICE_URL:http://localhost:8081}
 
 server:
   port: ${APPLICATION_PORT:8082}
