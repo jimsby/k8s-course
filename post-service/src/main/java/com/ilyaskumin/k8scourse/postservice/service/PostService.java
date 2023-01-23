@@ -4,6 +4,7 @@ import com.ilyaskumin.k8scourse.postservice.feign.UserServiceFeignClient;
 import com.ilyaskumin.k8scourse.postservice.model.Post;
 import com.ilyaskumin.k8scourse.postservice.model.dto.request.UpdateAmountOfPostsRequest;
 import com.ilyaskumin.k8scourse.postservice.repository.PostRepository;
+import feign.FeignException;
 import feign.RetryableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class PostService {
         try {
             userServiceFeignClient.updateAmountOfPosts(userId, new UpdateAmountOfPostsRequest(count));
             log.info("Count of posts for user {} changed to: {}", userId, count);
-        } catch (RetryableException e) {
+        } catch (RetryableException | FeignException.NotFound e) {
             log.error(e.getLocalizedMessage());
         }
     }

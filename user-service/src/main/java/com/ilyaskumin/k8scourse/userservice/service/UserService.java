@@ -3,6 +3,7 @@ package com.ilyaskumin.k8scourse.userservice.service;
 import com.ilyaskumin.k8scourse.userservice.model.User;
 import com.ilyaskumin.k8scourse.userservice.model.dto.request.UpdateUserRequest;
 import com.ilyaskumin.k8scourse.userservice.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_EXIST_MESSAGE));
     }
 
+    @Transactional
     public User updateUser(Long id, UpdateUserRequest updatePostRequest) {
         var user = findUser(id);
 
@@ -48,6 +50,8 @@ public class UserService {
             user.setAmountOfPosts(countValue);
             log.info("Amount Of Posts for user {} has changed to {}", user.getId(), countValue);
         });
+
+        userRepository.save(user);
 
         return user;
     }

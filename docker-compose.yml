@@ -15,8 +15,7 @@ services:
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   post-service:
-    image: k8s-course/post-service
-    build: ./post-service
+    image: epamilyaskumin/k8s-course_post-service:1.0
     ports:
       - '8081:8080'
     depends_on:
@@ -29,8 +28,7 @@ services:
       APPLICATION_PORT: '8080'
 
   user-service:
-    image: k8s-course/user-service
-    build: ./user-service
+    image: epamilyaskumin/k8s-course_user-service:1.0
     ports:
       - '8082:8080'
     depends_on:
