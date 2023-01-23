@@ -4,9 +4,8 @@ services:
     image: postgres:latest
     container_name: database
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env
     ports:
       - '5400:5432'
     volumes:
@@ -15,29 +14,24 @@ services:
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   post-service:
-    image: epamilyaskumin/k8s-course_post-service:1.0
+    image: epamilyaskumin/k8s-course_post-service:1.0.1
+    container_name: ${POSTSERVICE_CNAME}
     ports:
-      - '8081:8080'
+      - ${POSTSERVICE_PORT}:${APPLICATION_PORT}
     depends_on:
       - postgres
-    environment:
-      DATABASE_URL: database
-      DATABASE_USERNAME: 'postgres'
-      DATABASE_PASSWORD: 'postgres'
-      USERSERVICE_URL: http://user-service:8080
-      APPLICATION_PORT: '8080'
+    env_file:
+      - .env
 
   user-service:
-    image: epamilyaskumin/k8s-course_user-service:1.0
+    image: epamilyaskumin/k8s-course_user-service:1.0.1
+    container_name: ${USERSERVICE_CNAME}
     ports:
-      - '8082:8080'
+      - ${USERSERVICE_PORT}:${APPLICATION_PORT}
     depends_on:
       - postgres
-    environment:
-      DATABASE_URL: database
-      DATABASE_USERNAME: 'postgres'
-      DATABASE_PASSWORD: 'postgres'
-      APPLICATION_PORT: '8080'
+    env_file:
+      - .env
 
 volumes:
   db-data:

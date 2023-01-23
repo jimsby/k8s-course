@@ -6,16 +6,16 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://${DATABASE_URL:localhost:5400}/posts
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:postgres}
+    url: jdbc:postgresql://${DATABASE_CNAME:localhost:5400}/posts
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     driverClassName: org.postgresql.Driver
   cloud:
     openfeign:
       client:
         config:
           user-service:
-            url: ${USERSERVICE_URL:http://localhost:8082}
+            url: http://${USERSERVICE_CNAME:localhost}:${APPLICATION_PORT:8082}
 
 server:
   port: ${APPLICATION_PORT:8081}

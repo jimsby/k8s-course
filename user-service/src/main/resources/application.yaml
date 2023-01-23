@@ -6,9 +6,9 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://${DATABASE_URL:localhost:5400}/users
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:postgres}
+    url: jdbc:postgresql://${DATABASE_CNAME:localhost:5400}/users
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     driverClassName: org.postgresql.Driver
 
 server:
