@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service-deployment
+  namespace: k8s-course
+  labels:
+    app: post-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: post-service
+  template:
+    metadata:
+      labels:
+        app: post-service
+    spec:
+      containers:
+        - name: post-service
+          image: epamilyaskumin/k8s-course_post-service:1.0.1
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: k8s-course-configmap
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8s-course
+  labels:
+    name: k8s-course
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-course-configmap
+  namespace: k8s-course
+data:
+  POSTGRES_USER: 'postgres'
+  POSTGRES_PASSWORD: 'postgres'
+  APPLICATION_PORT: '8080'
+  DATABASE_CNAME: 'database'
+  DATABASE_PORT: '5400'
+  POSTSERVICE_CNAME: 'post-serice'
+  POSTSERVICE_PORT: '8081'
+  USERSERVICE_CNAME: 'user-service'
+  USERSERVICE_PORT: '8082'
