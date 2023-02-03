@@ -16,3 +16,13 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+
+management:
+  health:
+    key:
+      enabled: db,diskSpace,ping
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
