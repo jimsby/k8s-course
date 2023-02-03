@@ -9,5 +9,6 @@ public class PostResponse {
     private Long id;
     private Long authorId;
     private String text;
+    private String topic;
     private LocalDate postedAt;
 }

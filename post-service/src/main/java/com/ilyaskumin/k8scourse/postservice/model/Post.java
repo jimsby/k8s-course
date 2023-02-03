@@ -22,6 +22,8 @@ public class Post {
 
     private String text;
 
+    private String topic;
+
     @CreatedDate
     private Instant postedAt;
 }
