@@ -1,8 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv
-  namespace: k8s-course
+  name: postgres-pv-2
   labels:
     app: local-pv
     type: local
@@ -11,15 +10,15 @@ spec:
   accessModes:
     - ReadWriteMany
   capacity:
-    storage: 1Gi
+    storage: 4Gi
   hostPath:
-    path: "/mnt/data"
+    path: "/mnt/data2"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-pv-claim
-  namespace: k8s-course
+  namespace: database-k8s-course
 spec:
   storageClassName: manual
   accessModes:
@@ -35,7 +34,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: p-init-sql
-  namespace: k8s-course
+  namespace: database-k8s-course
 data:
   create_tables.sql: |
     CREATE DATABASE users;
@@ -47,7 +46,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: database-deployment
-  namespace: k8s-course
+  namespace: database-k8s-course
 spec:
   replicas: 1
   selector:
@@ -85,7 +84,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: database
-  namespace: k8s-course
+  namespace: database-k8s-course
   labels:
     app: database
 spec:
