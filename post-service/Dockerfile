@@ -1,13 +1,16 @@
-# syntax=docker/dockerfile:1
+FROM maven:3.8.7-eclipse-temurin-19-alpine AS builder
 
-FROM eclipse-temurin:17-jdk-jammy
+# add pom.xml and source code
+ADD ./pom.xml pom.xml
+ADD ./src src/
 
-WORKDIR /app
+# package jar
+RUN mvn clean package -Dmaven.test.skip=true
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:resolve
+# Second stage: minimal runtime environment
+FROM eclipse-temurin:19-jre-alpine
 
-COPY src ./src
+# copy jar from the first stage
+COPY --from=builder target/post-service-0.0.1-SNAPSHOT.jar app.jar
 
-CMD ["./mvnw", "spring-boot:run"]
+ENTRYPOINT ["java","-jar","/app.jar"]
