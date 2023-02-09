@@ -3,7 +3,7 @@
 #### 1. Local build kustomization
 
 ```shell
-kubectl kustomize ./resource-manifests/.kustomization/ > ./resource-manifests/manifest2.yaml
+kubectl kustomize ./resource-manifests/.kustomization/ > ./resource-manifests/manifest-ns.yaml
 ```
 
 #### 2. Apply kustomization file
