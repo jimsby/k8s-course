@@ -1,0 +1,95 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-2
+  labels:
+    app: local-pv
+    type: local
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 4Gi
+  hostPath:
+    path: "/mnt/data2"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: p-init-sql
+  namespace: database-k8s-course
+data:
+  create_tables.sql: |
+    CREATE DATABASE users;
+    CREATE DATABASE posts;
+    GRANT ALL PRIVILEGES ON DATABASE users TO postgresql;
+    GRANT ALL PRIVILEGES ON DATABASE posts TO postgresql;
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database-deployment
+  namespace: database-k8s-course
+spec:
+  replicas: 1
+  serviceName: database
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: k8s-course-configmap
+            - secretRef:
+                name: k8s-course-secret
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-pv-claim
+            - mountPath: /docker-entrypoint-initdb.d
+              name: p-init-sql
+      volumes:
+        - name: p-init-sql
+          configMap:
+            name: p-init-sql
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Delete
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-pv-claim
+      spec:
+        accessModes: [ "ReadWriteMany" ]
+        storageClassName: manual
+        resources:
+          requests:
+            storage: 1Gi
+        selector:
+          matchLabels:
+            app: local-pv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: database-k8s-course
+  labels:
+    app: database
+spec:
+  type: ClusterIP
+  ports:
+    - name: "db-port"
+      protocol: "TCP"
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: database

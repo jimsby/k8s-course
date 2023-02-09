@@ -7,5 +7,5 @@ resources:
   - configmap.yaml
   - post-service-deployment.yaml
   - user-service-deployment.yaml
-  - database-deployment.yaml
+  - database-deployment-sfs.yaml
   - external-access.yaml
