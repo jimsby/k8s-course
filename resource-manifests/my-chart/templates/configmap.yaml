@@ -11,6 +11,7 @@ data:
   POSTSERVICE_PORT: '8081'
   USERSERVICE_CNAME: 'user-service.{{ include "my-chart.userservice-namespace" . }}'
   USERSERVICE_PORT: '8082'
+  {{- include "my-chart.labels" . }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -25,6 +26,7 @@ data:
   POSTSERVICE_PORT: '8081'
   USERSERVICE_CNAME: 'user-service.{{ include "my-chart.userservice-namespace" . }}'
   USERSERVICE_PORT: '8082'
+  {{- include "my-chart.labels" . }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -39,3 +41,4 @@ data:
   POSTSERVICE_PORT: '8081'
   USERSERVICE_CNAME: 'user-service.{{ include "my-chart.userservice-namespace" . }}'
   USERSERVICE_PORT: '8082'
+  {{- include "my-chart.labels" . }}
