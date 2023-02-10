@@ -1,0 +1,16 @@
+services:
+  database:
+    replicaCount: 1
+    namespacePrefix: "database"
+  postService:
+    replicaCount: 2
+    namespacePrefix: "post-service"
+    image:
+      repository: "epamilyaskumin/k8s-course_post-service"
+      tag: ""
+  userService:
+    replicaCount: 2
+    namespacePrefix: "user-service"
+    image:
+      repository: "epamilyaskumin/k8s-course_user-service"
+      tag: ""

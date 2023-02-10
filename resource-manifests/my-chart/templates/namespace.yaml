@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "my-chart.database-namespace" . }}
+  labels:
+    name: {{ include "my-chart.database-namespace" . }}
+    domain: {{ .Chart.Name }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "my-chart.postservice-namespace" . }}
+  labels:
+    name: {{ include "my-chart.postservice-namespace" . }}
+    domain: {{ .Chart.Name }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "my-chart.userservice-namespace" . }}
+  labels:
+    name: {{ include "my-chart.userservice-namespace" . }}
+    domain: {{ .Chart.Name }}
